@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Smart Notes AI Assistant</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .bento-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+      transition: all 0.2s ease;
+    }
+    .bento-card-dark {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 1rem;
+      color: #ffffff;
+    }
+    .bento-hover:hover {
+      border-color: #c7d2fe;
+      transform: translateY(-2px);
+    }
+    .bg-indigo-600 {
+      background-color: #4f46e5 !important;
+    }
+    .text-indigo-600 {
+      color: #4f46e5 !important;
+    }
+    .btn-indigo {
+      background-color: #4f46e5;
+      color: #ffffff;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+      transition: all 0.15s ease;
+    }
+    .btn-indigo:hover {
+      background-color: #4338ca;
+      color: #ffffff;
+    }
+    .ambient-orb {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 180px;
+      height: 180px;
+      background: #e0e7ff;
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Top Navbar with Bento styling -->
+  <nav class="navbar navbar-expand-lg bg-white border-bottom border-slate-200 sticky-top py-2.5">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/dashboard">
+        <div class="d-flex align-items-center justify-content-center bg-indigo-600 text-white rounded-3" style="width: 34px; height: 34px;">
+          <i class="bi bi-journal-bookmark-fill"></i>
+        </div>
+        <span class="text-dark">SmartNotes <span class="text-indigo-600">AI</span></span>
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#dashboardNavbar" aria-controls="dashboardNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="dashboardNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold text-indigo-600" aria-current="page" href="/dashboard">
+              <i class="bi bi-grid-fill me-1"></i> Bento Dashboard
+            </a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-3">
+          <div class="text-secondary small d-none d-md-flex align-items-center bg-light px-3 py-1.5 rounded-3 border">
+            <span class="spinner-grow spinner-grow-sm text-success me-2" style="width: 8px; height: 8px;"></span>
+            <span class="fw-medium">{{ user_email }}</span>
+          </div>
+          <button type="button" class="btn btn-outline-secondary btn-sm px-3 rounded-3" onclick="handleLogout()">
+            <i class="bi bi-box-arrow-right me-1"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Bento Grid Container -->
+  <main class="flex-grow-1 py-4">
+    <div class="container-fluid px-4 max-w-7xl">
+      
+      <!-- Bento Grid Row 1: Hero & AI Assistant Hub -->
+      <div class="row g-4 mb-4">
+        
+        <!-- Hero Bento Card (Col 8) -->
+        <div class="col-12 col-lg-8">
+          <div class="bento-card p-4 p-md-5 h-100 position-relative overflow-hidden d-flex flex-column justify-content-between">
+            <div class="ambient-orb"></div>
+            
+            <div class="position-relative z-1">
+              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-indigo-subtle border border-indigo-subtle rounded-pill text-indigo-700 text-xs fw-semibold mb-3">
+                <i class="bi bi-stars"></i> Powered by Google Gemini 2.5 Flash & Firebase Firestore
+              </div>
+              <h1 class="display-6 fw-bold text-dark tracking-tight mb-2">
+                Capture ideas, powered by <span class="text-indigo-600">Gemini</span>.
+              </h1>
+              <p class="text-secondary mb-4" style="max-width: 580px;">
+                Manage your research and notes with built-in AI summarization and rewriting tools, synchronized in real-time with Google Cloud Firestore.
+              </p>
+            </div>
+
+            <div class="position-relative z-1 pt-3 border-top d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-indigo px-4 py-2" data-bs-toggle="modal" data-bs-target="#newNoteModal">
+                  <i class="bi bi-plus-lg me-1"></i> Create New Note
+                </button>
+                <button type="button" class="btn btn-light border text-secondary px-3 py-2 rounded-3" onclick="loadNotes()">
+                  <i class="bi bi-arrow-clockwise me-1"></i> Sync Notes
+                </button>
+              </div>
+
+              <div class="small text-muted d-flex align-items-center">
+                <i class="bi bi-shield-check text-success me-1"></i> Isolated Firestore Document Scope
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Assistant Dark Bento Card (Col 4) -->
+        <div class="col-12 col-lg-4">
+          <div class="bento-card-dark p-4 h-100 d-flex flex-column justify-content-between shadow">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-uppercase fw-bold small text-indigo-300" style="letter-spacing: 0.1em; font-size: 0.75rem;">
+                  <i class="bi bi-cpu-fill me-1"></i> Active AI Intelligence
+                </span>
+                <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50">
+                  READY
+                </span>
+              </div>
+
+              <div class="p-3 rounded-3 mb-3 border border-secondary border-opacity-25" style="background: #1e293b;">
+                <p class="text-secondary small text-uppercase fw-bold mb-1" style="font-size: 0.7rem;">Active Model</p>
+                <p class="small text-light mb-0">Gemini 2.5 Flash is ready. Click any note to generate instant summaries or improve wording.</p>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="button" class="btn btn-outline-primary btn-sm py-2 text-start text-indigo-300 border-primary border-opacity-25 rounded-3 d-flex align-items-center justify-content-between" onclick="alert('Click on any note card below to trigger AI Summarization!')">
+                  <span><i class="bi bi-stars me-2 text-primary"></i> AI Summarize Note</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </button>
+                <button type="button" class="btn btn-outline-success btn-sm py-2 text-start text-success-emphasis border-success border-opacity-25 rounded-3 d-flex align-items-center justify-content-between" onclick="alert('Click on any note card below to trigger AI Rewrite!')">
+                  <span><i class="bi bi-magic me-2 text-success"></i> AI Rewrite & Polish</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-3 mt-4 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-end">
+              <div>
+                <p class="h4 fw-bold text-white mb-0">100%</p>
+                <p class="text-muted text-uppercase small mb-0" style="font-size: 0.7rem;">Service Health</p>
+              </div>
+              <div class="text-end">
+                <span class="badge bg-indigo-600 text-white font-monospace">Gemini SDK</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bento Grid Row 2: Status Indicators & Filter -->
+      <div class="row g-4 mb-4 align-items-center">
+        <!-- Database Status Bento Card -->
+        <div class="col-12 col-md-6">
+          <div class="bento-card p-3 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-3" style="width: 42px; height: 42px;">
+                <i class="bi bi-database fs-5"></i>
+              </div>
+              <div>
+                <p class="text-muted text-uppercase fw-bold small mb-0" style="font-size: 0.7rem;">Database Engine</p>
+                <p class="fw-bold text-dark mb-0">Cloud Firestore Connected</p>
+              </div>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2.5 py-1 text-uppercase fw-bold" style="font-size: 0.75rem;">
+              Secure Realtime
+            </span>
+          </div>
+        </div>
+
+        <!-- Search Bar Bento Card -->
+        <div class="col-12 col-md-6">
+          <div class="bento-card p-2">
+            <div class="input-group">
+              <span class="input-group-text bg-transparent border-0 text-muted ps-3"><i class="bi bi-search"></i></span>
+              <input 
+                type="text" 
+                id="searchNotesInput" 
+                class="form-control bg-transparent border-0 shadow-none ps-1" 
+                placeholder="Search notes by title or keyword..."
+              >
+              <span id="noteCountBadge" class="badge bg-light text-secondary border align-self-center me-2 px-2.5 py-1.5">0 notes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global Alert Container -->
+      <div id="alertContainer" class="mb-4"></div>
+
+      <!-- Loading State Indicator -->
+      <div id="notesLoading" class="text-center py-5" style="display: none;">
+        <div class="spinner-border text-indigo-600" role="status" style="width: 2.5rem; height: 2.5rem;">
+          <span class="visually-hidden">Loading notes...</span>
+        </div>
+        <p class="text-muted mt-2 small">Synchronizing documents with Firestore...</p>
+      </div>
+
+      <!-- Empty State Bento Card -->
+      <div id="emptyNotesState" class="bento-card text-center py-5 px-4" style="display: none;">
+        <div class="d-inline-flex align-items-center justify-content-center bg-indigo-50 text-indigo-600 rounded-circle p-4 mb-3" style="width: 72px; height: 72px;">
+          <i class="bi bi-journal-plus fs-2"></i>
+        </div>
+        <h4 class="fw-bold text-dark">No Notes Found</h4>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 440px; font-size: 0.95rem;">
+          Your Firestore database has no active notes. Create your first note now and test one-click Gemini AI summarization!
+        </p>
+        <button type="button" class="btn btn-indigo px-4 py-2" data-bs-toggle="modal" data-bs-target="#newNoteModal">
+          <i class="bi bi-plus-lg me-1"></i> Create Your First Note
+        </button>
+      </div>
+
+      <!-- Notes Grid Container (Bento Items) -->
+      <div class="row g-4" id="notesGrid">
+        <!-- Injected via static/js/app.js -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: Create New Note -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="newNoteModal" tabindex="-1" aria-labelledby="newNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 1.25rem; overflow: hidden;">
+        
+        <div class="modal-header bg-white border-bottom px-4 py-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center justify-content-center bg-indigo-600 text-white rounded-3" style="width: 32px; height: 32px;">
+              <i class="bi bi-journal-plus"></i>
+            </div>
+            <h5 class="modal-title fw-bold text-dark" id="newNoteModalLabel">Create New Note</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="newNoteForm">
+          <div class="modal-body p-4">
+            <div id="newNoteAlertContainer" class="mb-3"></div>
+
+            <div class="mb-3">
+              <label for="newNoteTitle" class="form-label fw-semibold text-secondary small">Note Title <span class="text-danger">*</span></label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg bg-light border-0" 
+                id="newNoteTitle" 
+                placeholder="e.g. Brainstorming Project Architecture" 
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="newNoteContent" class="form-label fw-semibold text-secondary small">Note Content</label>
+              <textarea 
+                class="form-control bg-light border-0" 
+                id="newNoteContent" 
+                rows="7" 
+                placeholder="Type your notes, ideas, or meeting transcripts here..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer bg-light border-0 px-4 py-3">
+            <button type="button" class="btn btn-outline-secondary rounded-3 px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" id="saveNewNoteBtn" class="btn btn-indigo px-4">Save to Firestore</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: Edit Existing Note -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 1.25rem; overflow: hidden;">
+        
+        <div class="modal-header bg-white border-bottom px-4 py-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center justify-content-center bg-dark text-white rounded-3" style="width: 32px; height: 32px;">
+              <i class="bi bi-pencil-square"></i>
+            </div>
+            <h5 class="modal-title fw-bold text-dark" id="editNoteModalLabel">Edit Note</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="editNoteForm">
+          <input type="hidden" id="editNoteId">
+          <div class="modal-body p-4">
+            <div id="editNoteAlertContainer" class="mb-3"></div>
+
+            <div class="mb-3">
+              <label for="editNoteTitle" class="form-label fw-semibold text-secondary small">Note Title <span class="text-danger">*</span></label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg bg-light border-0" 
+                id="editNoteTitle" 
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="editNoteContent" class="form-label fw-semibold text-secondary small">Note Content</label>
+              <textarea 
+                class="form-control bg-light border-0" 
+                id="editNoteContent" 
+                rows="8"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer bg-light border-0 px-4 py-3">
+            <button type="button" class="btn btn-outline-secondary rounded-3 px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" id="updateNoteBtn" class="btn btn-indigo px-4">Save Changes</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 3: Gemini AI Result Modal (Summarize / Improve) -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="aiModal" tabindex="-1" aria-labelledby="aiModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bento-card-dark shadow-2xl border border-secondary border-opacity-25" style="border-radius: 1.25rem; overflow: hidden;">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25 px-4 py-3 bg-dark">
+          <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2" id="aiModalTitle">
+            <i class="bi bi-stars text-indigo-400"></i> Gemini AI Assistant
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-3 py-2 mb-3" id="aiTargetNoteTitle"></div>
+
+          <!-- Loading Spinner -->
+          <div id="aiLoadingSpinner" class="text-center py-5">
+            <div class="spinner-border text-indigo-400" role="status" style="width: 2.5rem; height: 2.5rem;">
+              <span class="visually-hidden">Gemini AI is processing...</span>
+            </div>
+            <p class="text-light mt-3 mb-0 fw-semibold">Gemini 2.5 Flash is processing your note...</p>
+          </div>
+
+          <!-- Result Content -->
+          <div id="aiResultContent"></div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25 px-4 py-3 bg-dark">
+          <button type="button" class="btn btn-outline-light btn-sm rounded-3 px-3" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="aiApplyBtn" class="btn btn-success btn-sm rounded-3 px-3" style="display: none;">
+            <i class="bi bi-check-circle me-1"></i> Apply to Edit Form
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-top border-slate-200 py-3 text-center text-muted small mt-auto">
+    <div class="container-fluid px-4">
+      Smart Notes AI Assistant &bull; Bento Grid Edition &bull; Flask + Firestore + Google Gemini 2.5 Flash
+    </div>
+  </footer>
+
+  <!-- Firebase Compatibility Web SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Client Application Script -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

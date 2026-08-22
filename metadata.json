@@ -1,0 +1,6 @@
+{
+  "name": "Smart Notes AI Assistant",
+  "description": "A beginner-friendly full-stack web application built with Python Flask, Firebase Authentication, Firebase Firestore, and the Google Gemini API with Bootstrap 5.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

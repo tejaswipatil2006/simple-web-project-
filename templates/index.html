@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Notes AI Assistant - Home</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+        <i class="bi bi-journal-bookmark-fill text-primary"></i>
+        <span>Smart Notes <span class="badge bg-primary text-white">AI</span></span>
+      </a>
+      <div class="d-flex gap-2">
+        <a href="/login" class="btn btn-outline-light btn-sm px-3">Login</a>
+        <a href="/register" class="btn btn-primary btn-sm px-3">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow-1 d-flex align-items-center py-5">
+    <div class="container">
+      
+      <!-- Hero Section -->
+      <div class="row align-items-center justify-content-center text-center text-lg-start g-5">
+        <div class="col-lg-7">
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 small fw-semibold">
+            <i class="bi bi-stars"></i> Powered by Google Gemini & Firebase
+          </div>
+          <h1 class="display-4 fw-bold text-dark mb-3">
+            Intelligent Note-Taking with <span class="text-primary">Gemini AI</span>
+          </h1>
+          <p class="lead text-secondary mb-4">
+            A beginner-friendly full-stack application built with <strong>Python Flask</strong>, <strong>Firebase Firestore</strong>, and the <strong>Google Gemini API</strong>. Create, organize, summarize, and polish your notes effortlessly.
+          </p>
+          
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mb-4">
+            <a href="/register" class="btn btn-primary btn-lg px-4 shadow-sm">
+              <i class="bi bi-person-plus me-1"></i> Create Free Account
+            </a>
+            <a href="/login" class="btn btn-outline-secondary btn-lg px-4 bg-white">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+            </a>
+          </div>
+
+          <!-- Quick badges -->
+          <div class="d-flex flex-wrap gap-2 text-muted small justify-content-center justify-content-lg-start">
+            <span class="badge bg-white text-dark border p-2"><i class="bi bi-shield-lock text-success me-1"></i> Firebase Auth</span>
+            <span class="badge bg-white text-dark border p-2"><i class="bi bi-database text-warning me-1"></i> Cloud Firestore</span>
+            <span class="badge bg-white text-dark border p-2"><i class="bi bi-cpu text-primary me-1"></i> Gemini 2.5 Flash</span>
+            <span class="badge bg-white text-dark border p-2"><i class="bi bi-code-slash text-danger me-1"></i> Python Flask</span>
+          </div>
+        </div>
+
+        <!-- Hero Feature Card Preview -->
+        <div class="col-lg-5">
+          <div class="card shadow border-0 rounded-4 overflow-hidden">
+            <div class="card-header bg-dark text-white p-3 d-flex justify-content-between align-items-center">
+              <span class="small fw-semibold"><i class="bi bi-file-earmark-text me-2"></i>Sample AI Note</span>
+              <span class="badge bg-success">Active Note</span>
+            </div>
+            <div class="card-body p-4 bg-white">
+              <h5 class="card-title fw-bold text-dark">Q3 Project Planning & Milestones</h5>
+              <p class="card-text text-secondary small mb-3">
+                Review quarterly milestones, architect the microservices, integrate Gemini API for summaries, and configure Firestore security rules...
+              </p>
+              
+              <div class="p-3 bg-light rounded border mb-3">
+                <div class="d-flex align-items-center text-primary fw-semibold small mb-1">
+                  <i class="bi bi-stars me-1"></i> Gemini AI Summary:
+                </div>
+                <p class="small text-muted mb-0">
+                  • 3 core milestones scheduled for Q3 delivery.<br>
+                  • Focus on Flask backend & secure Firestore integration.
+                </p>
+              </div>
+
+              <div class="d-grid gap-2">
+                <a href="/register" class="btn btn-sm btn-outline-primary">
+                  Try AI Note Assistant Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="row mt-5 pt-5 g-4 border-top">
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-3">
+            <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-3 p-3 mb-3" style="width: 50px; height: 50px;">
+              <i class="bi bi-shield-check fs-4"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Secure Authentication</h5>
+            <p class="text-secondary small mb-0">
+              User registration and sign-in powered by Firebase Authentication. Notes remain strictly private to each user account.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-3">
+            <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-3 p-3 mb-3" style="width: 50px; height: 50px;">
+              <i class="bi bi-cloud-arrow-up fs-4"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Realtime Firestore Database</h5>
+            <p class="text-secondary small mb-0">
+              Full CRUD operations: create, read, update, and delete notes stored safely in Google Cloud Firestore.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-3">
+            <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-3 p-3 mb-3" style="width: 50px; height: 50px;">
+              <i class="bi bi-stars fs-4"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Gemini AI Assistant</h5>
+            <p class="text-secondary small mb-0">
+              One-click summaries and intelligent rewriting using Google's modern Gemini models via the official GenAI SDK.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-top py-3 text-center text-muted small">
+    <div class="container">
+      Smart Notes AI Assistant &bull; Python Flask + Firebase Firestore + Google Gemini API &bull; Bootstrap 5
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
